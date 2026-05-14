@@ -3,289 +3,325 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WebQuest: El Desafío del Oro Azul</title>
+    <title>Escape Room: Misión Fracciones</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons (Font version) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lucide-static@0.321.0/font/lucide.min.css">
     <style>
-        :root {
-            --primary: #2c3e50;
-            --secondary: #3498db;
-            --accent: #e67e22;
-            --bg: #f4f7f6;
-            --text: #333;
-            --white: #ffffff;
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a;
+            color: #f1f5f9;
         }
 
-        * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: var(--bg); color: var(--text); line-height: 1.6; margin: 0; padding: 20px; }
-
-        .container { max-width: 1000px; margin: 0 auto; background: var(--white); border-radius: 12px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
-        
-        header { background: var(--primary); color: var(--white); padding: 2rem; text-align: center; }
-        header h1 { margin: 0; font-size: 2.2rem; }
-        header p { margin: 10px 0 0; opacity: 0.9; font-style: italic; }
-
-        /* Tabs Navigation */
-        .tabs { display: flex; flex-wrap: wrap; background: #ecf0f1; border-bottom: 3px solid var(--secondary); }
-        .tab-link { 
-            padding: 15px 20px; cursor: pointer; border: none; background: none; 
-            font-weight: bold; color: var(--primary); transition: 0.3s; flex: 1; min-width: 120px;
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
-        .tab-link:hover { background: rgba(52, 152, 219, 0.1); }
-        .tab-link.active { background: var(--secondary); color: var(--white); }
 
-        /* Content Sections */
-        .tab-content { display: none; padding: 30px; animation: fadeIn 0.5s ease; }
-        .tab-content.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-        h2 { color: var(--secondary); border-left: 5px solid var(--accent); padding-left: 10px; }
-        .card { background: #f9f9f9; border-radius: 8px; padding: 20px; margin-bottom: 20px; border: 1px solid #eee; }
-        
-        /* Grid for Roles */
-        .roles-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; }
-        .role-card { background: var(--white); border-top: 4px solid var(--accent); padding: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-
-        /* Table Style */
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
-        th { background-color: var(--primary); color: white; }
-        tr:nth-child(even) { background-color: #f2f2f2; }
-
-        /* Interactive Quiz */
-        .quiz-container { background: #fff; padding: 20px; border: 2px solid var(--secondary); border-radius: 10px; }
-        .question { font-weight: bold; margin: 15px 0 5px; }
-        .options label { display: block; background: #f0f0f0; margin: 5px 0; padding: 10px; border-radius: 5px; cursor: pointer; transition: 0.2s; }
-        .options label:hover { background: #e0e0e0; }
-        
-        .drag-drop-zone { display: flex; gap: 10px; margin-top: 10px; }
-        .draggable { padding: 10px; background: var(--accent); color: white; cursor: move; border-radius: 4px; }
-        .dropzone { min-height: 50px; border: 2px dashed #ccc; flex: 1; display: flex; align-items: center; justify-content: center; border-radius: 4px; }
-
-        .btn-check { background: var(--secondary); color: white; border: none; padding: 12px 25px; border-radius: 5px; cursor: pointer; margin-top: 20px; font-size: 1rem; }
-        .btn-check:hover { background: #2980b9; }
-
-        iframe { border-radius: 8px; border: 1px solid #ddd; margin-top: 20px; }
-        
-        @media (max-width: 600px) {
-            .tabs { flex-direction: column; }
-            .tab-link { text-align: left; border-bottom: 1px solid #ddd; }
+        .step-transition {
+            transition: all 0.5s ease-in-out;
         }
+
+        .hidden { display: none; }
     </style>
 </head>
-<body>
+<body class="min-h-screen flex items-center justify-center p-4">
 
-<div class="container">
-    <header>
-        <h1>El Desafío del Oro Azul</h1>
-        <p>Hacia una gestión sostenible del agua en el siglo XXI</p>
-    </header>
+    <!-- CONTENEDOR PRINCIPAL -->
+    <main id="game-container" class="w-full max-w-2xl glass-panel rounded-2xl shadow-2xl p-8 relative overflow-hidden">
+        
+        <!-- PANTALLA DE INICIO / SELECCIÓN DE PERSONAJE -->
+        <section id="section-start" class="text-center">
+            <h1 class="text-4xl font-extrabold mb-6 text-blue-400 uppercase tracking-widest">Misión Espacial: El Núcleo de Fracciones</h1>
+            <p class="mb-8 text-slate-300">La nave se ha detenido por un error en los cálculos del reactor. Solo un experto en suma de fracciones puede reactivarlo. ¡Elige tu avatar para comenzar!</p>
+            
+            <div class="grid grid-cols-2 gap-4 mb-8">
+                <button onclick="selectCharacter('Ingeniera Estelar')" class="p-4 rounded-xl border border-slate-600 hover:border-blue-500 hover:bg-blue-900/30 transition group">
+                    <i class="lucide-user-cog w-12 h-12 mx-auto mb-2 text-blue-400"></i>
+                    <p class="font-bold">Ingeniera Estelar</p>
+                </button>
+                <button onclick="selectCharacter('Piloto Galáctico')" class="p-4 rounded-xl border border-slate-600 hover:border-purple-500 hover:bg-purple-900/30 transition group">
+                    <i class="lucide-rocket w-12 h-12 mx-auto mb-2 text-purple-400"></i>
+                    <p class="font-bold">Piloto Galáctico</p>
+                </button>
+            </div>
+        </section>
 
-    <nav class="tabs">
-        <button class="tab-link active" onclick="openTab(event, 'Intro')">Introducción</button>
-        <button class="tab-link" onclick="openTab(event, 'Objetivos')">Objetivos</button>
-        <button class="tab-link" onclick="openTab(event, 'Tarea')">Tarea</button>
-        <button class="tab-link" onclick="openTab(event, 'Proceso')">Proceso</button>
-        <button class="tab-link" onclick="openTab(event, 'Recursos')">Recursos</button>
-        <button class="tab-link" onclick="openTab(event, 'Evaluacion')">Evaluación</button>
-        <button class="tab-link" onclick="openTab(event, 'Quiz')">Quiz & Juego</button>
-        <button class="tab-link" onclick="openTab(event, 'Conclusion')">Conclusión</button>
-    </nav>
+        <!-- PRUEBA 1: SECUENCIA -->
+        <section id="section-1" class="hidden step-transition">
+            <div class="flex items-center gap-3 mb-4 text-blue-400">
+                <i class="lucide-list-ordered"></i>
+                <h2 class="text-xl font-bold uppercase">Prueba 1: Sincronización de Energía</h2>
+            </div>
+            <p class="mb-6">Suma las siguientes fracciones homogéneas y coloca los resultados en orden de menor a mayor valor:</p>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm text-slate-400 mb-1">A) 1/5 + 2/5</label>
+                    <input type="text" id="p1-res1" placeholder="Ej: 3/5" class="w-full p-3 bg-slate-900 border border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div>
+                    <label class="block text-sm text-slate-400 mb-1">B) 2/5 + 2/5</label>
+                    <input type="text" id="p1-res2" placeholder="Ej: 4/5" class="w-full p-3 bg-slate-900 border border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <button onclick="validatePrueba1()" id="btn-p1" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-lg flex items-center justify-center gap-2">
+                    Validar Secuencia <i class="lucide-arrow-right"></i>
+                </button>
+            </div>
+        </section>
 
-    <!-- 1. INTRODUCCIÓN -->
-    <div id="Intro" class="tab-content active">
-        <h2>¿Qué pasaría si mañana no sale agua de tu grifo?</h2>
-        <p>Estamos en el año 2040. En tu ciudad, el acceso al agua potable ha sido restringido a solo 2 horas al día. Las tensiones entre la industria, la agricultura y los ciudadanos han llegado a un punto crítico. Como miembros del "Consejo Ciudadano del Agua", han sido convocados para diseñar un Plan de Emergencia Hídrica que no solo solucione la escasez actual, sino que proponga un cambio de paradigma en el consumo.</p>
-        <div class="card">
-            <strong>El Problema:</strong> ¿Es posible equilibrar el derecho humano al agua con las demandas de un sistema económico en crecimiento? No hay una sola respuesta correcta, pero sí soluciones urgentes.
+        <!-- PRUEBA 2: IDENTIFICACIÓN -->
+        <section id="section-2" class="hidden step-transition">
+            <div class="flex items-center gap-3 mb-4 text-emerald-400">
+                <i class="lucide-microscope"></i>
+                <h2 class="text-xl font-bold uppercase">Prueba 2: El Filtro del Oxígeno</h2>
+            </div>
+            <p class="mb-4">Para reparar el filtro, necesitas el resultado de sumar una fracción propia e impropia:</p>
+            <div class="bg-slate-800 p-6 rounded-xl mb-6 text-center italic text-xl">
+                ¿Cuánto es 1/2 + 3/4?
+            </div>
+            <input type="text" id="p2-res" placeholder="Escribe la fracción (ej: x/y)" class="w-full p-3 bg-slate-900 border border-slate-700 rounded-lg mb-4">
+            <button onclick="validatePrueba2()" id="btn-p2" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-lg">
+                Reparar Filtro
+            </button>
+        </section>
+
+        <!-- PRUEBA 3: ASOCIACIÓN -->
+        <section id="section-3" class="hidden step-transition">
+            <div class="flex items-center gap-3 mb-4 text-amber-400">
+                <i class="lucide-layers"></i>
+                <h2 class="text-xl font-bold uppercase">Prueba 3: Estabilizadores Gravitacionales</h2>
+            </div>
+            <p class="mb-6">Asocia cada suma con su resultado simplificado:</p>
+            <div class="space-y-4">
+                <div class="flex items-center justify-between gap-4">
+                    <span>1/3 + 1/6 =</span>
+                    <select id="p3-sel1" class="bg-slate-900 border border-slate-700 p-2 rounded-lg">
+                        <option value="">-- selecciona --</option>
+                        <option value="1/2">1/2</option>
+                        <option value="2/9">2/9</option>
+                        <option value="1">1</option>
+                    </select>
+                </div>
+                <div class="flex items-center justify-between gap-4">
+                    <span>2/4 + 1/2 =</span>
+                    <select id="p3-sel2" class="bg-slate-900 border border-slate-700 p-2 rounded-lg">
+                        <option value="">-- selecciona --</option>
+                        <option value="3/4">3/4</option>
+                        <option value="1">1</option>
+                        <option value="1/4">1/4</option>
+                    </select>
+                </div>
+                <button onclick="validatePrueba3()" id="btn-p3" class="w-full bg-amber-600 hover:bg-amber-500 text-white font-bold py-3 rounded-lg">
+                    Estabilizar Gravedad
+                </button>
+            </div>
+        </section>
+
+        <!-- PRUEBA 4: CÓDIGO FINAL -->
+        <section id="section-4" class="hidden step-transition">
+            <div class="flex items-center gap-3 mb-4 text-red-400">
+                <i class="lucide-shield-alert"></i>
+                <h2 class="text-xl font-bold uppercase">Prueba 4: Código de Reinicio</h2>
+            </div>
+            <p class="mb-6">El sistema pide un código numérico final. Es el **numerador** resultante de la siguiente suma: <br><strong>5/6 + 2/3</strong></p>
+            <input type="number" id="p4-res" placeholder="Ingresa solo el numerador" class="w-full p-3 bg-slate-900 border border-slate-700 rounded-lg mb-4">
+            <button onclick="validatePrueba4()" id="btn-p4" class="w-full bg-red-600 hover:bg-red-500 text-white font-bold py-3 rounded-lg">
+                REINICIAR NÚCLEO
+            </button>
+        </section>
+
+        <!-- PANTALLA FINAL -->
+        <section id="section-final" class="hidden text-center">
+            <i class="lucide-party-popper w-20 h-20 text-yellow-400 mx-auto mb-4"></i>
+            <h1 class="text-3xl font-bold text-white mb-2">¡MISIÓN CUMPLIDA!</h1>
+            <p class="text-slate-400 mb-8">Has salvado la misión. Ingresa tu nombre para recibir tu certificado de experto en fracciones.</p>
+            
+            <div class="max-w-xs mx-auto space-y-4">
+                <input type="text" id="user-name" placeholder="Tu Nombre" class="w-full p-3 bg-slate-900 border border-slate-700 rounded-lg text-center uppercase">
+                <button onclick="downloadResults()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-lg flex items-center justify-center gap-2">
+                    <i class="lucide-download"></i> Descargar Comprobante
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- MODAL PERSONALIZADA -->
+    <div id="modal" class="fixed inset-0 bg-black/80 hidden flex items-center justify-center p-4 z-50">
+        <div class="bg-slate-800 border border-slate-600 p-6 rounded-2xl max-w-sm w-full text-center shadow-2xl">
+            <i id="modal-icon" class="w-16 h-16 mx-auto mb-4"></i>
+            <h3 id="modal-title" class="text-xl font-bold mb-2"></h3>
+            <p id="modal-text" class="text-slate-400 mb-6"></p>
+            <button onclick="closeModal()" class="w-full bg-slate-700 hover:bg-slate-600 py-2 rounded-lg font-bold">Cerrar</button>
         </div>
     </div>
 
-    <!-- 2. OBJETIVOS -->
-    <div id="Objetivos" class="tab-content">
-        <h2>Objetivos de Aprendizaje</h2>
-        <ul>
-            <li>Analizar las causas multicausales (geopolíticas, climáticas y económicas) de la escasez de agua a nivel global.</li>
-            <li>Evaluar el impacto de la huella hídrica en productos de consumo cotidiano.</li>
-            <li>Diseñar propuestas sostenibles utilizando herramientas digitales e IA generativa.</li>
-            <li>Fomentar el debate crítico y la colaboración interdisciplinar para la resolución de conflictos socioambientales.</li>
-        </ul>
-    </div>
+    <script>
+        // --- ESTADO DEL JUEGO ---
+        let selectedCharacter = "";
+        const state = {
+            currentStep: 0,
+            startTime: new Date().toLocaleString()
+        };
 
-    <!-- 3. TAREA -->
-    <div id="Tarea" class="tab-content">
-        <h2>La Misión: Manifiesto Digital "Gota a Gota"</h2>
-        <p>Deben crear una <strong>Campaña Multimedia Interactiva</strong> (en formato de página web, Genially o Canva) que presente su Plan de Emergencia Hídrica.</p>
-        <div class="roles-grid">
-            <div class="role-card">
-                <h3>Investigador Científico</h3>
-                <p>Analiza datos de estrés hídrico y propone soluciones técnicas (desalinización, recolección de lluvia).</p>
-            </div>
-            <div class="role-card">
-                <h3>Diseñador Estratégico</h3>
-                <p>Crea las visualizaciones de datos y el prototipo de la campaña usando herramientas digitales e IA para generar imágenes impactantes.</p>
-            </div>
-            <div class="role-card">
-                <h3>Redactor Ético-Político</h3>
-                <p>Escribe el manifiesto con las leyes y compromisos ciudadanos, asegurando la equidad en la distribución del recurso.</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- 4. PROCESO -->
-    <div id="Proceso" class="tab-content">
-        <h2>Pasos para el éxito</h2>
-        <ol>
-            <li><strong>Fase 1: Inmersión.</strong> Consulten los recursos y definan qué zona geográfica será su caso de estudio.</li>
-            <li><strong>Fase 2: Debate.</strong> Usen un prompt en una IA Generativa (ChatGPT/Gemini) para simular un debate entre un agricultor, un CEO de una embotelladora y un ecologista. Analicen las respuestas.</li>
-            <li><strong>Fase 3: Producción.</strong> Diseñen un infografía que compare la huella hídrica de una hamburguesa vs una ensalada.</li>
-            <li><strong>Fase 4: El Manifiesto.</strong> Integren todo en una presentación interactiva. Asegúrense de que el diseño sea responsive y accesible.</li>
-        </ol>
-    </div>
-
-    <!-- 5. RECURSOS -->
-    <div id="Recursos" class="tab-content">
-        <h2>Fuentes de Consulta</h2>
-        <div class="card">
-            <ul>
-                <li><strong>Naciones Unidas (2023).</strong> <em>Informe Mundial sobre el Desarrollo de los Recursos Hídricos.</em> <a href="#">Enlace oficial</a></li>
-                <li><strong>Fundación Aquae (2022).</strong> <em>¿Qué es la huella hídrica? Análisis de consumo invisible.</em> <a href="#">Ver artículo</a></li>
-                <li><strong>RTVE Documentales (2021).</strong> <em>La guerra del agua: El conflicto que viene.</em> <a href="#">Ver vídeo</a></li>
-                <li><strong>UNESCO (2024).</strong> <em>Estrategias para la resiliencia hídrica ante el cambio climático.</em> <a href="#">Informe PDF</a></li>
-            </ul>
-        </div>
-    </div>
-
-    <!-- 6. EVALUACIÓN -->
-    <div id="Evaluacion" class="tab-content">
-        <h2>Rúbrica de Evaluación</h2>
-        <table>
-            <tr>
-                <th>Criterio</th>
-                <th>Excelente (4)</th>
-                <th>Bueno (3)</th>
-                <th>Suficiente (2)</th>
-                <th>Insuficiente (1)</th>
-            </tr>
-            <tr>
-                <td>Contextualización</td>
-                <td>Problema auténtico y profundamente analizado.</td>
-                <td>Presenta el problema con claridad.</td>
-                <td>Describe el problema de forma superficial.</td>
-                <td>No identifica el problema real.</td>
-            </tr>
-            <tr>
-                <td>Colaboración</td>
-                <td>Roles perfectamente definidos y trabajo equitativo.</td>
-                <td>Roles claros con buena interacción.</td>
-                <td>Poca coordinación entre los miembros.</td>
-                <td>No hay evidencia de trabajo en equipo.</td>
-            </tr>
-            <tr>
-                <td>Diseño Visual</td>
-                <td>Atractivo, profesional y facilita la lectura.</td>
-                <td>Ordenado y con elementos gráficos adecuados.</td>
-                <td>Básico, con algunos errores de formato.</td>
-                <td>Confuso o poco legible.</td>
-            </tr>
-            <tr>
-                <td>Uso de IA y Tics</td>
-                <td>Integración creativa y crítica de IA y Web 2.0.</td>
-                <td>Uso correcto de herramientas digitales.</td>
-                <td>Uso limitado o solo instrumental.</td>
-                <td>No utiliza las herramientas sugeridas.</td>
-            </tr>
-            <tr>
-                <td>Citación APA</td>
-                <td>Citas y referencias perfectas según APA 7ma ed.</td>
-                <td>Mínimos errores en el formato de citación.</td>
-                <td>Citas incompletas o formato incorrecto.</td>
-                <td>No incluye fuentes ni citas.</td>
-            </tr>
-        </table>
-    </div>
-
-    <!-- 7. QUIZ INTERACTIVO -->
-    <div id="Quiz" class="tab-content">
-        <h2>Pon a prueba tus conocimientos</h2>
-        <div class="quiz-container" id="quizUI">
-            <!-- Selección Múltiple -->
-            <div class="question">1. ¿Qué sector consume la mayor cantidad de agua dulce a nivel mundial?</div>
-            <div class="options">
-                <label><input type="radio" name="q1" value="a"> Doméstico</label>
-                <label><input type="radio" name="q1" value="b"> Industrial</label>
-                <label><input type="radio" name="q1" value="c"> Agrícola</label>
-            </div>
-
-            <div class="question">2. El término "Agua Virtual" se refiere a:</div>
-            <div class="options">
-                <label><input type="radio" name="q2" value="a"> Agua en el metaverso</label>
-                <label><input type="radio" name="q2" value="b"> Agua necesaria para producir un bien</label>
-                <label><input type="radio" name="q2" value="c"> Agua contaminada no visible</label>
-            </div>
-
-            <!-- Verdadero/Falso -->
-            <div class="question">3. ¿El 3% de toda el agua de la Tierra es dulce? (V/F)</div>
-            <div class="options">
-                <label><input type="radio" name="q3" value="v"> Verdadero</label>
-                <label><input type="radio" name="q3" value="f"> Falso</label>
-            </div>
-
-            <!-- Relacionar (Simplificado) -->
-            <div class="question">4. Relaciona: ¿Cuál es el principal desafío en zonas urbanas?</div>
-            <select id="q4">
-                <option value="0">Selecciona...</option>
-                <option value="a">Falta de infraestructura</option>
-                <option value="b">Exceso de lluvia</option>
-            </select>
-
-            <button class="btn-check" onclick="checkQuiz()">Verificar Resultados</button>
-        </div>
-
-        <h2 style="margin-top:40px;">Reto Adicional: El Rosco del Sistema Solar</h2>
-        <iframe allow="fullscreen" height="600" width="100%" src="https://es.educaplay.com/recursos-educativos/5601079-rosco_sistema_solar.html"></iframe>
-    </div>
-
-    <!-- 8. CONCLUSIÓN -->
-    <div id="Conclusion" class="tab-content">
-        <h2>Reflexión Final</h2>
-        <div class="card">
-            <p>Al finalizar esta WebQuest, habrán descubierto que el agua no es solo un recurso natural, sino un eje de poder, salud y justicia social. El "Plan de Emergencia" que han diseñado es el primer paso para convertirse en ciudadanos activos y responsables.</p>
-            <strong>Pregunta de cierre:</strong> Después de investigar, ¿crees que el precio del agua debería subir para fomentar el ahorro, o debería ser gratuita por ser un derecho humano? Discute con tu equipo.
-        </div>
-    </div>
-</div>
-
-<script>
-    function openTab(evt, tabName) {
-        var i, tabcontent, tablinks;
-        tabcontent = document.getElementsByClassName("tab-content");
-        for (i = 0; i < tabcontent.length; i++) {
-            tabcontent[i].style.display = "none";
-            tabcontent[i].classList.remove("active");
+        // --- LÓGICA DE NAVEGACIÓN ---
+        function showSection(id) {
+            // Ocultar todas las secciones
+            document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
+            // Mostrar la seleccionada
+            const el = document.getElementById(id);
+            el.classList.remove('hidden');
+            el.classList.add('animate-pulse'); // Efecto visual breve
+            setTimeout(() => el.classList.remove('animate-pulse'), 500);
         }
-        tablinks = document.getElementsByClassName("tab-link");
-        for (i = 0; i < tablinks.length; i++) {
-            tablinks[i].className = tablinks[i].className.replace(" active", "");
+
+        function selectCharacter(name) {
+            selectedCharacter = name;
+            showSection('section-1');
         }
-        document.getElementById(tabName).style.display = "block";
-        document.getElementById(tabName).classList.add("active");
-        evt.currentTarget.className += " active";
-    }
 
-    function checkQuiz() {
-        let score = 0;
-        const r1 = document.querySelector('input[name="q1"]:checked');
-        const r2 = document.querySelector('input[name="q2"]:checked');
-        const r3 = document.querySelector('input[name="q3"]:checked');
-        const r4 = document.getElementById('q4').value;
+        // --- MODAL PERSONALIZADA ---
+        function showModal(title, text, type = 'error') {
+            const modal = document.getElementById('modal');
+            const icon = document.getElementById('modal-icon');
+            const titleEl = document.getElementById('modal-title');
+            const textEl = document.getElementById('modal-text');
 
-        if(r1 && r1.value === 'c') score++;
-        if(r2 && r2.value === 'b') score++;
-        if(r3 && r3.value === 'v') score++;
-        if(r4 === 'a') score++;
+            titleEl.innerText = title;
+            textEl.innerText = text;
+            
+            if(type === 'success') {
+                icon.className = "lucide-check-circle w-16 h-16 mx-auto mb-4 text-emerald-500";
+            } else {
+                icon.className = "lucide-x-octagon w-16 h-16 mx-auto mb-4 text-red-500";
+            }
 
-        alert("Has acertado " + score + " de 4 preguntas evaluadas en este demo.");
-    }
-</script>
+            modal.classList.remove('hidden');
+        }
 
+        function closeModal() {
+            document.getElementById('modal').classList.add('hidden');
+        }
+
+        // --- VALIDACIONES DE PRUEBAS ---
+
+        function normalize(str) {
+            return str.replace(/\s+/g, '').toLowerCase();
+        }
+
+        function validatePrueba1() {
+            const r1 = normalize(document.getElementById('p1-res1').value);
+            const r2 = normalize(document.getElementById('p1-res2').value);
+
+            if (r1 === '3/5' && r2 === '4/5') {
+                successFlow('btn-p1', 'section-2');
+            } else {
+                showModal("Error de Cálculo", "Las frecuencias no coinciden. Recuerda: mismo denominador, se suman numeradores.");
+            }
+        }
+
+        function validatePrueba2() {
+            const r = normalize(document.getElementById('p2-res').value);
+            // 1/2 + 3/4 = 2/4 + 3/4 = 5/4
+            if (r === '5/4' || r === '1.25') {
+                successFlow('btn-p2', 'section-3');
+            } else {
+                showModal("Filtro Atascado", "Ese no es el valor correcto. Busca un común denominador (4).");
+            }
+        }
+
+        function validatePrueba3() {
+            const s1 = document.getElementById('p3-sel1').value;
+            const s2 = document.getElementById('p3-sel2').value;
+
+            if (s1 === '1/2' && s2 === '1') {
+                successFlow('btn-p3', 'section-4');
+            } else {
+                showModal("Desequilibrio", "Algunas asociaciones son incorrectas. ¡Vuelve a revisar!");
+            }
+        }
+
+        function validatePrueba4() {
+            const r = document.getElementById('p4-res').value;
+            // 5/6 + 2/3 = 5/6 + 4/6 = 9/6. El numerador es 9.
+            if (r === '9') {
+                successFlow('btn-p4', 'section-final');
+            } else {
+                showModal("Código Inválido", "El reactor no acepta ese código. Revisa el numerador final de 5/6 + 2/3.");
+            }
+        }
+
+        function successFlow(btnId, nextSectionId) {
+            const btn = document.getElementById(btnId);
+            btn.disabled = true;
+            btn.classList.replace('bg-blue-600', 'bg-emerald-600');
+            btn.innerHTML = `<i class="lucide-check"></i> ¡Logrado!`;
+            
+            showModal("¡Excelente!", "Has superado este desafío con éxito.", "success");
+            
+            setTimeout(() => {
+                closeModal();
+                showSection(nextSectionId);
+            }, 1500);
+        }
+
+        // --- FUNCIÓN DE DESCARGA ---
+        function downloadResults() {
+            const name = document.getElementById('user-name').value.trim();
+            
+            if (!name) {
+                showModal("Falta Información", "Por favor, ingresa tu nombre para generar el certificado.");
+                return;
+            }
+
+            const htmlContent = `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <meta charset="UTF-8">
+                    <style>
+                        body { font-family: sans-serif; text-align: center; padding: 50px; background-color: #f4f4f9; }
+                        .cert { border: 10px double #1e293b; padding: 30px; background: white; }
+                        h1 { color: #1e40af; }
+                        .stamp { font-weight: bold; color: #059669; font-size: 1.5em; margin-top: 20px; }
+                    </style>
+                </head>
+                <body>
+                    <div class="cert">
+                        <h1>CERTIFICADO DE LOGRO</h1>
+                        <p>Este documento certifica que</p>
+                        <h2>${name.toUpperCase()}</h2>
+                        <p>ha completado con éxito el <strong>Escape Room: Misión Fracciones</strong></p>
+                        <p>Rol desempeñado: ${selectedCharacter}</p>
+                        <div class="stamp">COMPLETADO EXITOSAMENTE</div>
+                        <p style="margin-top: 40px; font-size: 0.8em; color: gray;">
+                            Fecha de emisión: ${new Date().toLocaleString()}
+                        </p>
+                    </div>
+                </body>
+                </html>
+            `;
+
+            const blob = new Blob([htmlContent], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            
+            link.href = url;
+            link.download = `Certificado_Fracciones_${name.replace(/\s+/g, '_')}.html`;
+            document.body.appendChild(link);
+            link.click();
+            
+            // Limpieza
+            setTimeout(() => {
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
+            }, 100);
+        }
+    </script>
 </body>
 </html>
